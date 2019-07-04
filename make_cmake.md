@@ -31,7 +31,7 @@ $ sudo apt-get install --yes make cmake
 
 # Make
 
-Tener que ejecutar GCC archivo por archivo es pasable en proyectos de juguete, pero cuando la cantidad de archivos crece empieza a ser difícil de manejar. Para ayudar con esto existe [Make](https://www.gnu.org/software/make/), un intérprete que lee archivos *Makefile* con un lenguaje específico para expresar objetivos, dependencias, y acciones a tomar para cada tarea.
+Tener que ejecutar GCC a mano para compilar archivo por archivo es viable en proyectos de juguete, pero cuando la cantidad de archivos crece empieza a ser difícil de manejar. Para ayudar con esto existe [Make](https://www.gnu.org/software/make/), un intérprete que lee archivos *Makefile* con un lenguaje específico para expresar objetivos, dependencias, y acciones a tomar para cada tarea.
 
 En el fondo lo que expresamos con la sintaxis de los archivos *Makefile* es un grafo acíclico de dependencias (*DAG*), el cual se resuelve dinámicamente en cada ejecución, para resolver aquellas tareas que falten, saltando las que ya estén resueltas de ejecuciones anteriores.
 
