@@ -1,6 +1,11 @@
-# Herramientas de construcción: Make y CMake
+---
+title: "Construcción de proyectos: Make y CMake"
+author: Juan Navarro
+---
 
-## Intro
+
+
+# Intro
 
 En esta sección usaremos el siguiente programa de pruebas:
 
@@ -24,7 +29,7 @@ $ sudo apt-get install --yes make cmake
 
 
 
-## Make
+# Make
 
 Tener que ejecutar GCC archivo por archivo es pasable en proyectos de juguete, pero cuando la cantidad de archivos crece empieza a ser difícil de manejar. Para ayudar con esto existe [Make](https://www.gnu.org/software/make/), un intérprete que lee archivos *Makefile* con un lenguaje específico para expresar objetivos, dependencias, y acciones a tomar para cada tarea.
 
@@ -65,7 +70,7 @@ Lecturas:
 
 
 
-## CMake
+# CMake
 
 En algún momento alguien decidió que la sintaxis de Make es demasiado complicada, y que demasiados proyectos acababan teniendo unos *Makefile* monstruosos y difíciles de comprender. Por ello la [solución obvia](https://xkcd.com/927/) era crear una alternativa que fuese más legible y permitiese configurar proyectos a mayor escala. Ahí es cuando nace CMake, posiblemente el gestor de compilación con peor sintaxis de la historia (con permiso de *autotools*).
 
