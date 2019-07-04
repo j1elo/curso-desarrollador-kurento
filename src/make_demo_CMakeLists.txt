@@ -1,0 +1,14 @@
+# <#file>
+
+cmake_minimum_required(VERSION 3.0)
+project(demo VERSION 1.0.0 LANGUAGES C)
+
+add_library(make_calc SHARED make_demo_calc.c)
+target_link_libraries(make_calc m)
+
+add_executable(make_demo make_demo_main.c)
+target_link_libraries(make_demo make_calc)
+
+add_custom_target(run COMMAND make_demo)
+
+install(TARGETS make_demo make_calc DESTINATION ${CMAKE_SOURCE_DIR})

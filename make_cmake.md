@@ -4,38 +4,22 @@
 
 En esta sección usaremos el siguiente programa de pruebas:
 
+```c
+<#include make_demo_calc.h>
 ```
-cat <<EOF >demo_calc.h
-int calc(int a, int b);
-EOF
 
-cat <<EOF >demo_calc.c
-#include <math.h>
+```c
+<#include make_demo_calc.c>
+```
 
-int calc(int a, int b)
-{
-    return a + sqrt(b);
-}
-EOF
-
-cat <<EOF >demo_main.c
-#include "demo_calc.h"
-#include <stdio.h>
-
-int main(void)
-{
-    int result = calc(3, 25);
-    printf("Result: %d\n", result);
-
-    return 0;
-}
-EOF
+```c
+<#include make_demo_main.c>
 ```
 
 Y usaremos las siguientes herramientas:
 
-```
-sudo apt-get install --yes make cmake
+```sh
+$ sudo apt-get install --yes make cmake
 ```
 
 
@@ -46,31 +30,11 @@ Tener que ejecutar GCC archivo por archivo es pasable en proyectos de juguete, p
 
 En el fondo lo que expresamos con la sintaxis de los archivos *Makefile* es un grafo acíclico de dependencias (*DAG*), el cual se resuelve dinámicamente en cada ejecución, para resolver aquellas tareas que falten, saltando las que ya estén resueltas de ejecuciones anteriores.
 
-Con un ejemplo lo veremos más claro. Ejecuta:
+Con un ejemplo lo veremos más claro. Usamos el siguiente *Makefile*:
 
+```makefile
+<#include make_demo_Makefile>
 ```
-cat >demo_Makefile
-```
-
-y pega esto:
-
-```
-all: demo
-
-run: demo
-	LD_LIBRARY_PATH=. ./demo
-
-demo: demo_main.c libdemo_calc.so
-	gcc -o demo demo_main.c -L. -ldemo_calc
-
-libdemo_calc.so: demo_calc.c
-	gcc -shared -fPIC -o libdemo_calc.so demo_calc.c -lm
-
-clean:
-	rm -f demo libdemo_calc.so
-```
-
-Después, presiona `Ctrl+D`. Es necesario pegar el texto así porque de otra manera la terminal eliminaría los tabuladores.
 
 Cada línea de un *Makefile* expresa un objetivo ("*target*") y los otros objetivos de los que este depende. Para cumplir los objetivos dependientes se ejecutarán las líneas que se listan debajo, que **deben ir TABULADAS**.
 
@@ -79,7 +43,8 @@ Cuando el objetivo coincide con el nombre de un archivo existente, este se consi
 Por ejemplo:
 
 ```
-make -f demo_Makefile run
+make -f make_demo_Makefile run
+<#exec make --always-make --directory ./src --no-print-directory -f make_demo_Makefile run>
 ```
 
 al ejecutar esto, `make` realiza los siguientes pasos:
@@ -89,7 +54,7 @@ al ejecutar esto, `make` realiza los siguientes pasos:
 3. `libdemo_calc.so` solo depende de `demo_calc.c`, que ya existe, por lo que se ejecuta el comando GCC correspondiente.
 4. La recursión de objetivos se va resolviendo de nuevo hacia arriba, hasta que la dependencia de `run` ha sido satisfecha y por fin se pueden ejecutar las reglas de este, que es básicamente ejecutar la aplicación.
 
-El target `all` es el que se ejecuta por defecto cuando se llama a `make` sin especificar ningún parámetro, simplemente porque es el primero que es definido en el archivo. Además, si nuestro archivo se llamase simplemente "*Makefile*", nos podríamos ahorrar el argumento `-f`.
+El target `all` es el que se ejecuta por defecto cuando se llama a `make` sin especificar ningún parámetro, simplemente porque es el primero que es definido en el archivo. Por convención, todo Makefile suele tener un target `all` que sirve para compilar el programa cuando `make` se ejecuta sin argumentos. Además, si nuestro archivo se llamase simplemente "*Makefile*", nos podríamos ahorrar el argumento `-f`.
 
 *Make* y su *Makefile* no solo sirven para compilar proyectos de C o C++; también pueden ser una herramienta muy potente para facilitar muchas otras tareas de administración o desarrollo, ya que su sistema basado en un árbol de objetivos permite expresar fácilmente muchos tipos de trabajos, desde preparar un entorno con máquinas Docker a asegurarse de que todos los pre-requisitos para algún proceso han sido descargados con `scp` de algún servidor remoto. Las reglas de un *Makefile* pueden contener cualquier comando de consola!
 
@@ -110,61 +75,54 @@ Es cierto que para proyectos pequeños ofrece una sintaxis bastante más sencill
 
 Este sería el archivo *CMakeLists* que proporciona un resultado similar al *Makefile* del ejemplo anterior:
 
-```
-cat <<'EOF' >CMakeLists.txt
-cmake_minimum_required(VERSION 3.0)
-project(demo VERSION 1.0.0 LANGUAGES C)
-
-add_library(demo_calc SHARED demo_calc.c)
-target_link_libraries(demo_calc m)
-
-add_executable(demo demo_main.c)
-target_link_libraries(demo demo_calc)
-
-add_custom_target(run COMMAND demo)
-
-install(TARGETS demo_calc demo DESTINATION ${CMAKE_SOURCE_DIR})
-EOF
+```cmake
+<#include make_demo_CMakeLists.txt>
 ```
 
-CMake tiene opiniones fuertes sobre cómo deberías hacer ciertas cosas, y por ejemplo no permite que el archivo de proyecto tenga otro nombre que no sea `CMakeLists.txt`.
+CMake tiene opiniones fuertes sobre cómo se deben hacer ciertas cosas, y por ejemplo no permite que el archivo de proyecto tenga otro nombre que no sea `CMakeLists.txt`.
 
 Los pasos de auto-generación que son ejecutados por CMake terminan creando una gran cantidad de archivos y directorios temporales, por lo que el *modus operandi* típico es crear un directorio `build`, y ejecutar CMake desde ahí:
 
+```sh
+$ mkdir build && pushd build
+
+$ cmake ..
+-- The C compiler identification is GNU 5.4.0
+-- Check for working C compiler: /usr/bin/gcc
+-- Check for working C compiler: /usr/bin/gcc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: build
 ```
-mkdir build && pushd build
 
-cmake ..
-# -- The C compiler identification is GNU 5.4.0
-# -- Check for working C compiler: /usr/bin/gcc
-# -- Check for working C compiler: /usr/bin/gcc -- works
-# -- Detecting C compiler ABI info
-# -- Detecting C compiler ABI info - done
-# -- Detecting C compile features
-# -- Detecting C compile features - done
-# -- Configuring done
-# -- Generating done
-# -- Build files have been written to: ~/tutorial/c/build
+```sh
+$ make
+Scanning dependencies of target make_calc
+[ 25%] Building C object CMakeFiles/make_calc.dir/make_demo_calc.c.o
+[ 50%] Linking C shared library libmake_calc.so
+[ 50%] Built target make_calc
+Scanning dependencies of target make_demo
+[ 75%] Building C object CMakeFiles/make_demo.dir/make_demo_main.c.o
+[100%] Linking C executable make_demo
+[100%] Built target make_demo
+```
 
-make
-# Scanning dependencies of target demo_calc
-# [ 25%] Building C object CMakeFiles/demo_calc.dir/demo_calc.c.o
-# [ 50%] Linking C shared library libdemo_calc.so
-# [ 50%] Built target demo_calc
-# Scanning dependencies of target demo
-# [ 75%] Building C object CMakeFiles/demo.dir/demo_main.c.o
-# [100%] Linking C executable demo
-# [100%] Built target demo
+```sh
+$ make install
+Install the project...
+-- Install configuration: ""
+-- Installing: make_demo
+-- Set runtime path of "make_demo" to ""
+-- Installing: libmake_calc.so
+```
 
-make install
-# Install the project...
-# -- Install configuration: ""
-# -- Installing: /home/juan/work/kurento/3_FORMACION/c/libdemo_calc.so
-# -- Installing: /home/juan/work/kurento/3_FORMACION/c/demo
-# -- Set runtime path of "/home/juan/work/kurento/3_FORMACION/c/demo" to ""
+```sh
+$ popd
 
-popd
-
-LD_LIBRARY_PATH=. ./demo
-# Result: 8
+$ LD_LIBRARY_PATH=. ./make_demo
+Result: 8
 ```
