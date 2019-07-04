@@ -54,9 +54,9 @@ make -f make_demo_Makefile run
 
 al ejecutar esto, `make` realiza los siguientes pasos:
 
-1. Busca un archivo `demo`. Como no existe, busca el objetivo `demo` en el `Makefile` y lo intenta cumplir.
-2. Para `demo` se comprueba si existen `demo_main.c` y `libdemo_calc.so`. El segundo no existe así que el proceso se repite recursivamente con el objetivo del mismo nombre.
-3. `libdemo_calc.so` solo depende de `demo_calc.c`, que ya existe, por lo que se ejecuta el comando GCC correspondiente.
+1. Busca un archivo `make_demo`. Como no existe, busca el objetivo `make_demo` en el `Makefile` y lo intenta cumplir.
+2. Para `make_demo` se comprueba si existen `make_demo_main.c` y `libmake_calc.so`. El segundo no existe así que el proceso se repite recursivamente con el objetivo del mismo nombre.
+3. `libmake_calc.so` solo depende de `make_demo_calc.c`, que ya existe, por lo que se ejecuta el comando GCC correspondiente.
 4. La recursión de objetivos se va resolviendo de nuevo hacia arriba, hasta que la dependencia de `run` ha sido satisfecha y por fin se pueden ejecutar las reglas de este, que es básicamente ejecutar la aplicación.
 
 El target `all` es el que se ejecuta por defecto cuando se llama a `make` sin especificar ningún parámetro, simplemente porque es el primero que es definido en el archivo. Por convención, todo Makefile suele tener un target `all` que sirve para compilar el programa cuando `make` se ejecuta sin argumentos. Además, si nuestro archivo se llamase simplemente "*Makefile*", nos podríamos ahorrar el argumento `-f`.
