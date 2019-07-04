@@ -29,14 +29,17 @@ int main(void)
     printf("prices[1]: %d\n", prices[1]);
     printf("prices[2]: %d\n", prices[2]);
 
-    int* pt_first_price = prices;
-    int* pt_last_price = (prices + 2);
+    int* pt_prices_0 = prices;
+    int* pt_prices_1 = (prices + 1);
+    int* pt_prices_2 = (prices + 2);
 
-    printf("pt_first_price: %p\n", pt_first_price);
-    printf("pt_last_price: %p\n", pt_last_price);
+    printf("pt_prices_0: %p\n", pt_prices_0);
+    printf("pt_prices_1: %p\n", pt_prices_1);
+    printf("pt_prices_2: %p\n", pt_prices_2);
 
-    *pt_first_price = 20;
-    *pt_last_price = 20;
+    *pt_prices_0 = 111;
+    *pt_prices_1 = 222;
+    *pt_prices_2 = 333;
 
     printf("prices[0]: %d\n", prices[0]);
     printf("prices[1]: %d\n", prices[1]);
