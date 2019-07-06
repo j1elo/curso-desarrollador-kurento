@@ -47,8 +47,8 @@ Cuando el objetivo coincide con el nombre de un archivo existente, este se consi
 
 Por ejemplo:
 
-```
-make -f make_demo_Makefile run
+```sh
+$ make -f make_demo_Makefile run
 <#exec make --always-make --directory ./src --no-print-directory -f make_demo_Makefile run>
 ```
 
@@ -74,11 +74,11 @@ Lecturas:
 
 # CMake
 
-En algún momento alguien decidió que la sintaxis de Make es demasiado complicada, y que demasiados proyectos acababan teniendo unos *Makefile* monstruosos y difíciles de comprender. Por ello la [solución obvia](https://xkcd.com/927/) era crear una alternativa que fuese más legible y permitiese configurar proyectos a mayor escala. Ahí es cuando nace CMake, posiblemente el gestor de compilación con peor sintaxis de la historia (con permiso de *autotools*).
+El problema que suelen tener los archivos *Makefile* es que terminan siendo complejos y muy poco mantenibles cuando se usan para proyectos grandes. En algún momento alguien decidió que la [solución obvia](https://xkcd.com/927/) era crear una alternativa que fuese más legible y permitiese configurar proyectos a mayor escala. Ahí es cuando nace CMake, un sistema de compilación para proyectos C y C++, que podría equipararse a lo que es Maven para Java.
 
-CMake es un *generador de Makefiles*; su entrada son archivos `CMakeLists.txt` y su salida son archivos `Makefile`. Por ello la manera más común de compilar un proyecto basado en CMake es primero ejecutar `cmake` seguido inmediatamente por `make`.
+CMake es un **generador de Makefiles**; su entrada son archivos `CMakeLists.txt` y su salida son archivos `Makefile`. Por ello la manera más común de compilar un proyecto basado en CMake es primero ejecutar `cmake` seguido inmediatamente por `make`. En otras plataformas, CMake es capaz de generar archivos de proyecto `.vcxproj` para **Visual Studio** en Windows, o `.xcodeproj` para **Xcode** en Mac.
 
-Es cierto que para proyectos pequeños ofrece una sintaxis bastante más sencilla, y además su configuración por defecto ya se encarga de muchos detalles a la hora de lidiar con el compilador, como por ejemplo añadir `-shared -fPIC` al compilar librerías.
+Es cierto que para proyectos pequeños, CMake ofrece una sintaxis bastante sencilla, y además su configuración por defecto ya se encarga de muchos detalles a la hora de lidiar con el compilador (como por ejemplo añadir `-shared -fPIC` al compilar librerías). Pero la sintaxis de CMake se basa principalmente en llamar a funciones que contaminen el entorno con variables creadas implícitamente, lo cual es un modo de operar que resulta bastante extraño para el programador, habituado a que los resultados de operar con funciones se reciban explícitamente en forma de variable o similar.
 
 Este sería el archivo *CMakeLists* que proporciona un resultado similar al *Makefile* del ejemplo anterior:
 
@@ -88,11 +88,13 @@ Este sería el archivo *CMakeLists* que proporciona un resultado similar al *Mak
 
 CMake tiene opiniones fuertes sobre cómo se deben hacer ciertas cosas, y por ejemplo no permite que el archivo de proyecto tenga otro nombre que no sea `CMakeLists.txt`.
 
-Los pasos de auto-generación que son ejecutados por CMake terminan creando una gran cantidad de archivos y directorios temporales, por lo que el *modus operandi* típico es crear un directorio `build`, y ejecutar CMake desde ahí:
+Los pasos de auto-generación que son ejecutados por CMake terminan creando una gran cantidad de archivos y directorios temporales, por lo que el *modus operandi* típico es crear un directorio `build`, y ejecutar CMake desde ahí. Esta forma de compilar se suele llamar **out-of-source build**:
 
 ```sh
-$ mkdir build && pushd build
+$ mkdir build && cd build
+```
 
+```sh
 $ cmake ..
 -- The C compiler identification is GNU 5.4.0
 -- Check for working C compiler: /usr/bin/gcc
@@ -128,8 +130,60 @@ Install the project...
 ```
 
 ```sh
-$ popd
+$ cd ..
+```
 
+```sh
 $ LD_LIBRARY_PATH=. ./make_demo
 Result: 8
 ```
+
+Lecturas:
+
+- [CMake Build System](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html)
+- [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+- [It's Time To Do CMake Right](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
+
+
+
+## Ejemplo de proyecto con CMake
+
+Escribiremos una aplicación que lea un objeto JSON, lo parsee e imprima el primer campo del mismo. Para manejar JSON desde C haremos uso de la la librería [cJSON](https://github.com/DaveGamble/cJSON), que se compila e instala usando CMake y Make:
+
+```sh
+$ git clone https://github.com/DaveGamble/cJSON.git
+$ cd cJSON
+$ mkdir build
+$ cd build
+$ cmake .. -DCMAKE_INSTALL_PREFIX=/opt/cJSON \
+    -DENABLE_CJSON_TEST=OFF -DENABLE_CJSON_UTILS=OFF
+$ make
+$ sudo make install
+```
+
+Para indicar en nuestro proyecto que dependemos de esta librería, y en general para establecer cualquier dependencia, CMake tiene el comando [find_package()](https://cmake.org/cmake/help/latest/command/find_package.html). Este comando funciona de una forma similar a como lo hace el programa [pkg-config](https://manpages.ubuntu.com/manpages/bionic/en/man1/pkg-config.1.html).
+
+Por ejemplo, dado el nombre `Foo` para la librería `libfoo.so`:
+
+* `pkg-config` busca un archivo 'Foo.pc', y si lo encuentra imprime las opciones de compilador que son necesarias para usar la librería: `-lfoo`.
+
+* `find_package()` puede funcionar de dos maneras:
+
+  - En el modo "*Config*", CMake busca **en el sistema** un archivo `FooConfig.cmake`, y si lo encuentra carga su contenido en el proyecto actual. Esto suele traer consigo un *target* que puede ser usado en otros comandos de CMake para establecer dependencias. Este modo es usado normalmente cuando la dependencia provee en su instalación de los archivo *.cmake* necesarios para su uso.
+
+  - En modo "*Module*", CMake busca **en el proyecto actual** un archivo `FindFoo.cmake`, que contenga la información de qué archivos y librerías componen la dependencia `Foo`. Este modo suele usarse cuando la dependencia no provee por sí misma de soporte de CMake, por lo que es el usuario de la dependencia (nosotros) quien tiene que ocuparse de escribir un archivo `Find*.cmake` que permita importarla.
+
+En el caso de cJSON estamos en el primer caso: la configuración es instalada en `<prefix>/lib/cmake/cJSON/cJSONConfig.cmake`, por lo que podemos usar el modo *Config*. En nuestro ejemplo, `<prefix>` es `/opt/cJSON`, una ruta no estándar, por lo que debemos indicar a CMake en qué rutas buscar:
+
+```cmake
+<#include cmake_json_CMakeLists.txt>
+```
+
+```c
+<#include cmake_json_main.c>
+```
+
+Lecturas:
+
+- [CMake Commands](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html)
+- [CMake Packages](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html)

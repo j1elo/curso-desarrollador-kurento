@@ -12,7 +12,7 @@ int main(void)
     int (*calc_fn)(int, int);
 
     // Open a handle to the shared library
-    // See: https://manpages.ubuntu.com/manpages/disco/en/man3/dlopen.3.html
+    // See: https://manpages.ubuntu.com/manpages/bionic/en/man3/dlopen.3.html
     handle = dlopen(file_path, RTLD_NOW);
     if (!handle) {
         printf("WARNING: %s\n", dlerror());
