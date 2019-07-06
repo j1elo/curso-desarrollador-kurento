@@ -10,6 +10,7 @@ int main(void)
     cJSON* json = cJSON_Parse(json_str);
     cJSON* name = cJSON_GetObjectItemCaseSensitive(json, "name");
 
+    printf("JSON object: '%s'\n", json_str);
     printf("JSON name: '%s'\n", name->valuestring);
 
     return 0;
