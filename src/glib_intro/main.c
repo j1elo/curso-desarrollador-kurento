@@ -5,11 +5,13 @@
 #include <stdio.h>
 #include <string.h>
 
-
-
 // GList ----------------------------------------------------------------------
 
-// https://developer.gnome.org/glib/stable/glib-Doubly-Linked-Lists.html
+/* Use GList to store some static strings and iterate over it to print them.
+ *
+ * See:
+ * - https://developer.gnome.org/glib/stable/glib-Doubly-Linked-Lists.html
+ */
 
 void sum_gpointer(gpointer data, gpointer user_data)
 {
@@ -92,11 +94,38 @@ void test_list(void)
     }
 }
 
+// GList with g_list_free_full() ----------------------------------------------
 
+/* Use GList to store some dynamically-allocated strings, and show how they
+ * must be free'd explicitly when freeing the list itself.
+ *
+ * See:
+ * - https://developer.gnome.org/glib/stable/glib-String-Utility-Functions.html#g-strdup
+ * - https://developer.gnome.org/glib/stable/glib-Doubly-Linked-Lists.html#g-list-free-full
+ */
+
+void test_list_malloc(void)
+{
+    GList* list = NULL;
+
+    list = g_list_append(list, g_strdup("AAA"));  // 4 Bytes
+    list = g_list_append(list, g_strdup("BBB"));  // 4 Bytes
+    list = g_list_append(list, g_strdup("CCC"));  // 4 Bytes
+
+    g_list_foreach(list, (GFunc)printf, NULL);
+    printf("\n");
+
+    //g_list_free(list); list = NULL;  // Leaks 12 Bytes
+    g_list_free_full(list, g_free); list = NULL;
+}
 
 // GHashTable -----------------------------------------------------------------
 
-// https://developer.gnome.org/glib/stable/glib-Hash-Tables.html
+/* Store some static string into a hash table, and show how lookups work.
+ *
+ * See:
+ * - https://developer.gnome.org/glib/stable/glib-Hash-Tables.html
+ */
 
 void test_hash(void)
 {
@@ -128,82 +157,22 @@ void test_hash(void)
     g_hash_table_destroy(cities);
 }
 
-
-
-// Exercise -------------------------------------------------------------------
-
-/* Given a random string, count occurrences of each alphanumeric character
- * (ie. only letters and numbers).
- */
-
-void print_letter(char letter, int count)
-{
-    printf("--> '%c': %d\n", letter, count);
-}
-
-void exercise(char* secret)
-{
-    GHashTable* letters = g_hash_table_new(NULL, NULL);
-
-    for (size_t i = 0; i < strlen(secret); i++) {
-        char letter = secret[i];
-        gpointer key = GINT_TO_POINTER(letter);
-
-        if (!g_ascii_isalnum(letter)) {
-            continue;
-        }
-
-        if (g_hash_table_contains(letters, key)) {
-            gpointer value = g_hash_table_lookup(letters, key);
-            int count = GPOINTER_TO_INT(value);
-            count += 1;
-            value = GINT_TO_POINTER(count);
-            g_hash_table_replace(letters, key, value);
-        }
-        else {
-            gpointer value = GINT_TO_POINTER(1);
-            g_hash_table_insert(letters, key, value);
-        }
-    }
-
-    printf("Char count:\n");
-    g_hash_table_foreach(letters, (GHFunc)print_letter, NULL);
-
-    g_hash_table_destroy(letters);
-}
-
-
-
 // ----------------------------------------------------------------------------
 
 int main(void)
 {
     printf("---- GList ----\n");
-
     test_list();
+    printf("\n");
 
-    printf("\n\n");
-
-    // ----
+    printf("---- GList with g_list_free_full() ----\n");
+    test_list_malloc();
+    printf("\n");
 
     printf("---- GHashTable ----\n");
-
     test_hash();
-
-    printf("\n\n");
-
-    // ----
-
-    printf("---- Exercise ----\n");
-
-    char* secrets[3] = {
-        "aaa_bbbb_ccc_dddd",
-        "1111_222_333_4444",
-        "www_xxx_yy_zzzzzz",
-    };
-    exercise(secrets[g_random_int() % 3]);
-
-    printf("\n\n");
 
     return 0;
 }
+
+// ----------------------------------------------------------------------------
