@@ -1,7 +1,15 @@
 // <#file>
 
 #include <glib.h>
+
 #include <stdio.h>
+#include <string.h>
+
+
+
+// GList ----------------------------------------------------------------------
+
+// https://developer.gnome.org/glib/stable/glib-Doubly-Linked-Lists.html
 
 void sum_gpointer(gpointer data, gpointer user_data)
 {
@@ -28,7 +36,7 @@ void print_int(int data)
     printf("--> %d\n", data);
 }
 
-int main(void)
+void test_list(void)
 {
     GList* list = NULL;
 
@@ -58,7 +66,7 @@ int main(void)
         g_list_foreach(list, sum_gpointer, &total);
         printf("total: %d\n", total);
 
-        // Pass data and state as gpointers
+        // Pass data and state as ints
         g_list_foreach(list, (GFunc)sum_int, &total);
         printf("total: %d\n", total);
 
@@ -82,6 +90,120 @@ int main(void)
 
         g_list_free(list); list = NULL;
     }
+}
+
+
+
+// GHashTable -----------------------------------------------------------------
+
+// https://developer.gnome.org/glib/stable/glib-Hash-Tables.html
+
+void test_hash(void)
+{
+    GHashTable* cities = g_hash_table_new(g_str_hash, g_str_equal);
+
+    g_hash_table_insert(cities, "France", "Paris");
+    g_hash_table_insert(cities, "Germany", "Berlin");
+    g_hash_table_insert(cities, "Italy", "Rome");
+    g_hash_table_insert(cities, "Portugal", "Lisbon");
+    g_hash_table_insert(cities, "Spain", "Madrid");
+
+    char* countries[3] = {"Belgium", "Spain", "Poland"};
+
+    for (int i = 0; i < 3; i++) {
+        char* country = countries[i];
+        gpointer key = country;
+
+        if (g_hash_table_contains(cities, key)) {
+            gpointer value = g_hash_table_lookup(cities, key);
+            char* city = value;
+
+            printf("Capital of '%s' is: '%s'\n", country, city);
+        }
+        else {
+            printf("Unknown country: '%s'\n", country);
+        }
+    }
+
+    g_hash_table_destroy(cities);
+}
+
+
+
+// Exercise -------------------------------------------------------------------
+
+/* Given a random string, count occurrences of each alphanumeric character
+ * (ie. only letters and numbers).
+ */
+
+void print_letter(char letter, int count)
+{
+    printf("--> '%c': %d\n", letter, count);
+}
+
+void exercise(char* secret)
+{
+    GHashTable* letters = g_hash_table_new(NULL, NULL);
+
+    for (size_t i = 0; i < strlen(secret); i++) {
+        char letter = secret[i];
+        gpointer key = GINT_TO_POINTER(letter);
+
+        if (!g_ascii_isalnum(letter)) {
+            continue;
+        }
+
+        if (g_hash_table_contains(letters, key)) {
+            gpointer value = g_hash_table_lookup(letters, key);
+            int count = GPOINTER_TO_INT(value);
+            count += 1;
+            value = GINT_TO_POINTER(count);
+            g_hash_table_replace(letters, key, value);
+        }
+        else {
+            gpointer value = GINT_TO_POINTER(1);
+            g_hash_table_insert(letters, key, value);
+        }
+    }
+
+    printf("Char count:\n");
+    g_hash_table_foreach(letters, (GHFunc)print_letter, NULL);
+
+    g_hash_table_destroy(letters);
+}
+
+
+
+// ----------------------------------------------------------------------------
+
+int main(void)
+{
+    printf("---- GList ----\n");
+
+    test_list();
+
+    printf("\n\n");
+
+    // ----
+
+    printf("---- GHashTable ----\n");
+
+    test_hash();
+
+    printf("\n\n");
+
+    // ----
+
+    printf("---- Exercise ----\n");
+
+    char* secrets[3] = {
+        "aaa_bbbb_ccc_dddd",
+        "1111_222_333_4444",
+        "www_xxx_yy_zzzzzz",
+    };
+    exercise(secrets[g_random_int() % 3]);
+
+    printf("\n\n");
 
     return 0;
 }
