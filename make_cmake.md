@@ -198,6 +198,7 @@ JSON name: 'My Name'
 
 - CMake:
 
+    - [The Hitchhiker's Guide to CMake](https://cgold.readthedocs.io/en/latest/)
     - [StackOverflow | CMake Module mode vs. Config mode](https://stackoverflow.com/questions/20746936/what-use-is-find-package-if-you-need-to-specify-cmake-module-path-anyway/20857070#20857070)
     - [CMake Commands](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html)
     - [CMake Packages](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html)
