@@ -228,42 +228,42 @@ La librería estándar de C (*stdlib*) provee de funciones para manipulación de
 
 2. Al compilar, indicamos la librería en la que las funciones externas están compiladas. La función `sqrt()` se encuentra en la librería estándar *math*, que en Ubuntu se instala como parte del paquete *libc6-dev*:
 
-```sh
-$ sudo apt-get install --yes libc6-dev
-```
+    ```sh
+    $ sudo apt-get install --yes libc6-dev
+    ```
 
-```sh
-$ dpkg -L libc6-dev | grep -e /math.h -e /libm.so
-/usr/lib/x86_64-linux-gnu/libm.so
-/usr/include/math.h
-```
+    ```sh
+    $ dpkg -L libc6-dev | grep -e /math.h -e /libm.so
+    /usr/lib/x86_64-linux-gnu/libm.so
+    /usr/include/math.h
+    ```
 
-   Cuando se indica una librería al compilar, esta debe estar disponible tanto en el momento de la compilación y enlazado (*link*) como en el momento de la ejecución. Por tanto, la librería debe estar instalada tanto en la máquina de desarrollo como en la que se ejecute el programa.
+Cuando se indica una librería al compilar, esta debe estar disponible tanto en el momento de la compilación y enlazado (*link*) como en el momento de la ejecución. Por tanto, la librería debe estar instalada tanto en la máquina de desarrollo como en la que se ejecute el programa.
 
-   Si intentamos compilar sin la librería *math*, nos encontramos con que la función `sqrt()` no ha sido definida en ninguna parte:
+Si intentamos compilar sin la librería *math*, nos encontramos con que la función `sqrt()` no ha sido definida en ninguna parte:
 
 ```sh
 $ gcc -o c_libm c_libm.c
 <#exec gcc -o c_libm src/c_libm.c 2\>&1>
 ```
 
-   Indicando al compilador el uso de esta librería, todo compila bien:
+Indicando al compilador el uso de esta librería, todo compila bien:
 
 ```sh
 $ gcc -o c_libm c_libm.c -lm
 <#exec gcc -o c_libm src/c_libm.c -lm>
 ```
 
-   Para obtener el nombre `lm` seguimos este proceso:
+Para obtener el nombre `lm` seguimos este proceso:
 
-   - Del nombre del archivo, sustituimos "*lib*" por "*l*".
-   - Quitamos el sufijo "*.so*".
+- Del nombre del archivo, sustituimos "*lib*" por "*l*".
+- Quitamos el sufijo "*.so*".
 
-   Dado que el archivo de la librería es "`libm.so`", el resultado es "*lm*" y se lo pasamos así al compilador como argumento.
+Dado que el archivo de la librería es "`libm.so`", el resultado es "*lm*" y se lo pasamos así al compilador como argumento.
 
-   Por último, la función `printf()` también requiere el mismo proceso, pero al formar parte de la colección estándar de GCC, esta función no requiere enlazar expresamente con ninguna librería.
+Por último, la función `printf()` también requiere el mismo proceso, pero al formar parte de la colección estándar de GCC, esta función no requiere enlazar expresamente con ninguna librería.
 
-   Ejecutamos para comprobar el resultado:
+Ejecutamos para comprobar el resultado:
 
 ```sh
 $ ./c_libm

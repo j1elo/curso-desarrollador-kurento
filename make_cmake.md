@@ -63,13 +63,6 @@ El target `all` es el que se ejecuta por defecto cuando se llama a `make` sin es
 
 *Make* y su *Makefile* no solo sirven para compilar proyectos de C o C++; también pueden ser una herramienta muy potente para facilitar muchas otras tareas de administración o desarrollo, ya que su sistema basado en un árbol de objetivos permite expresar fácilmente muchos tipos de trabajos, desde preparar un entorno con máquinas Docker a asegurarse de que todos los pre-requisitos para algún proceso han sido descargados con `scp` de algún servidor remoto. Las reglas de un *Makefile* pueden contener cualquier comando de consola!
 
-Lecturas:
-
-- [An Introduction to Makefiles](ftp://ftp.gnu.org/old-gnu/Manuals/make/html_chapter/make_2.html#SEC5)
-- [Makefile Tutorial by Example](http://makefiletutorial.com/)
-- [JavaScript bundling with Makefile](https://blog.jayway.com/2017/03/12/short-introduction-makefiles/)
-- [How To Use Makefiles to Automate Repetitive Tasks on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-use-makefiles-to-automate-repetitive-tasks-on-an-ubuntu-vps)
-
 
 
 # CMake
@@ -164,13 +157,13 @@ Para indicar en nuestro proyecto que dependemos de esta librería, y en general 
 
 Por ejemplo, dado el nombre `Foo` para la librería `libfoo.so`:
 
-* `pkg-config` busca un archivo 'Foo.pc', y si lo encuentra imprime las opciones de compilador que son necesarias para usar la librería: `-lfoo`.
+* `pkg-config` busca un archivo `Foo.pc`, y si lo encuentra imprime las opciones de compilador que son necesarias para usar la librería: `-lfoo`.
 
 * `find_package()` puede funcionar de dos maneras:
 
-  - En el modo "*Config*", CMake busca **en el sistema** un archivo `FooConfig.cmake`, y si lo encuentra carga su contenido en el proyecto actual. Esto suele traer consigo un *target* que puede ser usado en otros comandos de CMake para establecer dependencias. Este modo es usado normalmente cuando la dependencia provee en su instalación de los archivo *.cmake* necesarios para su uso.
+    - En el modo "*Config*", CMake busca **en el sistema** un archivo `FooConfig.cmake`, y si lo encuentra carga su contenido en el proyecto actual. Esto suele traer consigo un *target* que puede ser usado en otros comandos de CMake para establecer dependencias. Este modo es usado normalmente cuando la dependencia provee en su instalación de los archivo *.cmake* necesarios para su uso.
 
-  - En modo "*Module*", CMake busca **en el proyecto actual** un archivo `FindFoo.cmake`, que contenga la información de qué archivos y librerías componen la dependencia `Foo`. Este modo suele usarse cuando la dependencia no provee por sí misma de soporte de CMake, por lo que es el usuario de la dependencia (nosotros) quien tiene que ocuparse de escribir un archivo `Find*.cmake` que permita importarla.
+    - En modo "*Module*", CMake busca **en el proyecto actual** un archivo `FindFoo.cmake`, que contenga la información de qué archivos y librerías componen la dependencia `Foo`. Este modo suele usarse cuando la dependencia no provee por sí misma de soporte de CMake, por lo que es el usuario de la dependencia (nosotros) quien tiene que ocuparse de escribir un archivo `Find*.cmake` que permita importarla.
 
 En el caso de cJSON estamos en el primer caso: la configuración es instalada en `<prefix>/lib/cmake/cJSON/cJSONConfig.cmake`, por lo que podemos usar el modo *Config*. En nuestro ejemplo, `<prefix>` es `/opt/cJSON`, una ruta no estándar, por lo que debemos indicar a CMake en qué rutas buscar:
 
@@ -192,7 +185,19 @@ JSON object: '{ "name": "My Name", "Number": 112233 }'
 JSON name: 'My Name'
 ```
 
-Lecturas:
 
-- [CMake Commands](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html)
-- [CMake Packages](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html)
+
+# Lecturas
+
+- Make:
+
+    - [An Introduction to Makefiles](ftp://ftp.gnu.org/old-gnu/Manuals/make/html_chapter/make_2.html#SEC5)
+    - [Makefile Tutorial by Example](http://makefiletutorial.com/)
+    - [JavaScript bundling with Makefile](https://blog.jayway.com/2017/03/12/short-introduction-makefiles/)
+    - [How To Use Makefiles to Automate Repetitive Tasks on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-use-makefiles-to-automate-repetitive-tasks-on-an-ubuntu-vps)
+
+- CMake:
+
+    - [StackOverflow | CMake Module mode vs. Config mode](https://stackoverflow.com/questions/20746936/what-use-is-find-package-if-you-need-to-specify-cmake-module-path-anyway/20857070#20857070)
+    - [CMake Commands](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html)
+    - [CMake Packages](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html)
