@@ -67,7 +67,12 @@ Solución en `glib_ex_1/main.c`
 
 # GObject
 
-**GObject** es la parte de GLib que añade a C la posibilidad de programar con orientación a objetos. Además, incluye el tipo fundamental `GType`, en base al cual todo el sistema de tipos de GLib es construido. Las clases basadas en `GObject` tienen capacidad de introspección, y son capaces de generar señales asíncronas entre objetos.
+**GObject** es la parte de GLib que añade a C la posibilidad de programar con orientación a objetos. Además, incluye el tipo fundamental [GType](https://developer.gnome.org/gobject/stable/chapter-gtype.html), en base al cual todo el sistema de tipos de GLib es construido. Las clases basadas en `GObject` tienen estas capacidades:
+
+* Gestión de memoria basada en *reference counting*: [Object memory management](https://developer.gnome.org/gobject/stable/gobject-memory.html).
+* Construcción y destrucción de instancias.
+* Propiedades genéricas por instancia, con funciones get/set: [Object properties](https://developer.gnome.org/gobject/stable/gobject-properties.html).
+* Señales asíncronas emitidas entre instancias: [Signals](https://developer.gnome.org/gobject/stable/signal.html).
 
 Dado que C es un lenguaje puramente imperativo y no dispone de soporte para orientación a objetos, todo el sistema de clases de GObject requiere el uso intensivo de macros y conlleva un uso considerable de *boilerplate*.
 
