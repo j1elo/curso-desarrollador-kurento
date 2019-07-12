@@ -80,24 +80,17 @@ Dado que C es un lenguaje puramente imperativo y no dispone de soporte para orie
 
 # Lecturas
 
-- [IBM | Manage C data using the GLib collections](https://developer.ibm.com/tutorials/l-glib/)
+- GLib:
 
-    ¡CUIDADO! Tiene muchos ejemplos y es una buena guía, pero el texto está codificado como UTF8 y muchos símbolos (como `->`, `*`, etc.) no son ASCII: no se pueden copiar y pegar porque provocarán errores al compilar.
+    - [IBM | Manage C data using the GLib collections](https://developer.ibm.com/tutorials/l-glib/)
 
-- [GLib Reference Manual](https://developer.gnome.org/glib/stable/)
-- [GObject Reference Manual](https://developer.gnome.org/gobject/stable/)
-- [Subclassing GObject](https://developer.gnome.org/SubclassGObject/)
-- [GNOME Platform Demos](https://developer.gnome.org/gnome-devel-demos/stable/c.html.en)
+        ¡CUIDADO! Tiene muchos ejemplos y es una buena guía, pero el texto está codificado como UTF8 y muchos símbolos (como `->`, `*`, etc.) no son ASCII: no se pueden copiar y pegar directamente, porque provocarán errores al compilar.
 
+    - [GLib Reference Manual](https://developer.gnome.org/glib/stable/)
 
-GString
-https://developer.gnome.org/glib/stable/glib-Strings.html
-
-GObject Doc | Part 1. Concepts
-https://developer.gnome.org/gobject/stable/pt01.html
-
-GObject Doc | Part 4. Tutorial
-https://developer.gnome.org/gobject/stable/pt02.html
-
-GNOME Platform Demos in C
-https://developer.gnome.org/gnome-devel-demos/stable/c.html.en
+- GObject:
+    - [GObject Doc | Part 1. Concepts](https://developer.gnome.org/gobject/stable/pt01.html)
+    - [GObject Doc | Part 4. Tutorial](https://developer.gnome.org/gobject/stable/pt02.html)
+    - [Subclassing GObject](https://developer.gnome.org/SubclassGObject/)
+    - [GObject Reference Manual](https://developer.gnome.org/gobject/stable/)
+    - [GNOME Platform Demos in C](https://developer.gnome.org/gnome-devel-demos/stable/c.html.en)

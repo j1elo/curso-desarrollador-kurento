@@ -132,12 +132,6 @@ Result: 8
 [100%] Built target run
 ```
 
-Lecturas:
-
-- [CMake Build System](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html)
-- [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
-- [It's Time To Do CMake Right](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
-
 
 
 ## Ejemplo de proyecto con CMake
@@ -198,7 +192,13 @@ JSON name: 'My Name'
 
 - CMake:
 
+    - [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
     - [The Hitchhiker's Guide to CMake](https://cgold.readthedocs.io/en/latest/)
     - [StackOverflow | CMake Module mode vs. Config mode](https://stackoverflow.com/questions/20746936/what-use-is-find-package-if-you-need-to-specify-cmake-module-path-anyway/20857070#20857070)
+    - [It's Time To Do CMake Right](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
+
+    Referencia oficial:
+
+    - [CMake Build System](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html)
     - [CMake Commands](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html)
     - [CMake Packages](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html)
