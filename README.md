@@ -10,7 +10,7 @@ Los archivos originales están escritos en formato Markdown, y antes de ser conv
 
 2. Conversión.
 
-    Usando [Pandoc], se convierten los archivos Markdon a formato HTML.
+    Usando [Pandoc](https://github.com/jgm/pandoc), se convierten los archivos Markdon a formato HTML.
     
 Todo este proceso está automatizado en el script [bin/generate.sh](https://github.com/j1elo/curso-desarrollador-kurento/blob/master/bin/generate.sh). Antes de usarlo necesitas instalar las dependencias:
 
