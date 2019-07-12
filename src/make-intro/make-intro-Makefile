@@ -1,0 +1,15 @@
+# <#file>
+
+all: make-intro
+
+run: make-intro
+	LD_LIBRARY_PATH=. ./make-intro
+
+make-intro: make-intro-main.c libmake-calc.so
+	gcc -o make-intro make-intro-main.c -L. -lmake-calc
+
+libmake-calc.so: make-intro-calc.c
+	gcc -shared -fPIC -o libmake-calc.so make-intro-calc.c -lm
+
+clean:
+	rm -f make-intro libmake-calc.so

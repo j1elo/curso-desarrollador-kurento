@@ -1,6 +1,6 @@
 // <#file>
 
-#include "c_lib_calc.h"
+#include "c-lib-calc.h"
 #include <stdio.h>
 
 int main(void)

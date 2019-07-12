@@ -24,21 +24,21 @@ $ sudo apt-get install --yes gcc
 El programa mínimo es una función `main()` que no recibe argumentos y devuelve un valor entero:
 
 ```c
-<#include c_intro.c>
+<#include src/c-intro/c-intro.c>
 ```
 
 lo compilamos:
 
 ```sh
-$ gcc -o c_intro c_intro.c
-<#exec gcc -o c_intro src/c_intro.c>
+$ gcc -o c-intro c-intro.c
+<#exec cd src/c-intro && gcc -o c-intro c-intro.c>
 ```
 
 y ejecutamos:
 
 ```sh
-$ ./c_intro
-<#exec ./c_intro>
+$ ./c-intro
+<#exec cd src/c-intro && ./c-intro>
 ```
 
 
@@ -50,17 +50,17 @@ C soporta los tipos de datos y construcciones sintácticas más habituales que c
 Por otro lado, construcciones más avanzadas que han ido apareciendo en otros lenguajes, como tuplas, funciones lambda, o estructuras de datos avanzadas, no existen en C.
 
 ```c
-<#include c_types.c>
+<#include src/c-intro/c-types.c>
 ```
 
 ```sh
-$ gcc -o c_types c_types.c
-<#exec gcc -o c_types src/c_types.c>
+$ gcc -o c-types c-types.c
+<#exec cd src/c-intro && gcc -o c-types c-types.c>
 ```
 
 ```sh
-$ ./c_types
-<#exec ./c_types>
+$ ./c-types
+<#exec cd src/c-intro && ./c-types>
 ```
 
 En las llamadas a `printf()`, `%d` es un conversor que procesa los argumentos de la función y los convierte a texto; este formato es bien conocido y existe en muchos otros lenguajes. La lista completa de conversiones se puede consultar en cualquier referencia de `printf()`, por ejemplo [en cplusplus.com](http://www.cplusplus.com/reference/cstdio/printf/).
@@ -76,17 +76,17 @@ La clave es pensar en que realmente C solo sabe manejar áreas de memoria, y los
 En el ejemplo anterior vimos `char* letters = "abcdefg"`. El significado de esto es que un puntero a tipo de datos `char` está apuntando a un área de memoria que contiene las letras desde la *a* hasta la *g*. En este ejemplo vemos como esto es lo mismo que un array:
 
 ```c
-<#include c_types_array.c>
+<#include src/c-intro/c-types-array.c>
 ```
 
 ```sh
-$ gcc -o c_types_array c_types_array.c
-<#exec gcc -o c_types_array src/c_types_array.c>
+$ gcc -o c-types-array c-types-array.c
+<#exec cd src/c-intro && gcc -o c-types-array c-types-array.c>
 ```
 
 ```sh
-$ ./c_types_array
-<#exec ./c_types_array>
+$ ./c-types-array
+<#exec cd src/c-intro && ./c-types-array>
 ```
 
 Las cadenas de texto se manejan de forma dinámica en forma de punteros a arrays de caracteres. El manejo de strings en C es bastante engorroso ya que se debe hacer todo de forma manual con funciones como [strlen()](http://www.cplusplus.com/reference/cstring/strlen/) y [strcpy()](http://www.cplusplus.com/reference/cstring/strcpy/), o usar una librería de terceros que provea de operaciones más avanzadas.
@@ -100,33 +100,33 @@ El acceso directo a memoria con punteros es una herramienta muy potente pero tam
 En la llamada a una función, se puede pasar cada argumento por valor (copia) o puntero (acceso directo a memoria). En el primer caso, una copia completa de la variable es creada en el punto de llamada, por lo que la función no podrá afectar al valor original:
 
 ```c
-<#include c_args_value.c>
+<#include src/c-intro/c-args-value.c>
 ```
 
 ```sh
-$ gcc -o c_args_value c_args_value.c
-<#exec gcc -o c_args_value src/c_args_value.c>
+$ gcc -o c-args-value c-args-value.c
+<#exec cd src/c-intro && gcc -o c-args-value c-args-value.c>
 ```
 
 ```sh
-$ ./c_args_value
-<#exec ./c_args_value>
+$ ./c-args-value
+<#exec cd src/c-intro && ./c-args-value>
 ```
 
 En el caso de paso por puntero, la función tiene acceso al área de memoria donde está almacenado el valor de la variable, por lo que es posible cambiarlo:
 
 ```c
-<#include c_args_pointer.c>
+<#include src/c-intro/c-args-pointer.c>
 ```
 
 ```sh
-$ gcc -o c_args_pointer c_args_pointer.c
-<#exec gcc -o c_args_pointer src/c_args_pointer.c>
+$ gcc -o c-args-pointer c-args-pointer.c
+<#exec cd src/c-intro && gcc -o c-args-pointer c-args-pointer.c>
 ```
 
 ```sh
-$ ./c_args_pointer
-<#exec ./c_args_pointer>
+$ ./c-args-pointer
+<#exec cd src/c-intro && ./c-args-pointer>
 ```
 
 
@@ -141,17 +141,17 @@ Nuestro programa recibe parámetros de ejecución a través de dos argumentos es
 Así podemos pasar parámetros a la ejecución de nuestro programa:
 
 ```c
-<#include c_args_main.c>
+<#include src/c-intro/c-args-main.c>
 ```
 
 ```sh
-$ gcc -o c_args_main c_args_main.c
-<#exec gcc -o c_args_main src/c_args_main.c>
+$ gcc -o c-args-main c-args-main.c
+<#exec cd src/c-intro && gcc -o c-args-main c-args-main.c>
 ```
 
 ```sh
-$ ./c_args_main Param1 Param2 --Option1 --Option2
-<#exec ./c_args_main Param1 Param2 --Option1 --Option2>
+$ ./c-args-main Param1 Param2 --Option1 --Option2
+<#exec cd src/c-intro && ./c-args-main Param1 Param2 --Option1 --Option2>
 ```
 
 Para parsear estos argumentos y así poder procesarlos de forma estructurada, existen funciones como [getopt()](https://manpages.ubuntu.com/manpages/bionic/en/man3/getopt.3.html).
@@ -163,23 +163,23 @@ Para parsear estos argumentos y así poder procesarlos de forma estructurada, ex
 La forma de no crear un único archivo `.c` enorme con todo el código de nuestra aplicación es separarlo en distintos archivos. Sin embargo, cada archivo `.c` forma lo que se conoce como *unidad de compilación*; estas unidades son independientes y no pueden acceder a las funciones o variables que existan en otros archivos:
 
 ```c
-<#include c_include1_calc.c>
+<#include src/c-intro/c-include1-calc.c>
 ```
 
 ```c
-<#include c_include1_main.c>
+<#include src/c-intro/c-include1-main.c>
 ```
 
 En este ejemplo, los contenidos de `calc.c` y `main.c` son independientes, aun si se compilan en el mismo binario:
 
 ```sh
-$ gcc -o c_include1 c_include1_main.c c_include1_calc.c
-<#exec gcc -o c_include1 src/c_include1_main.c src/c_include1_calc.c 2\>&1>
+$ gcc -o c-include1 c-include1-main.c c-include1-calc.c
+<#exec cd src/c-intro && gcc -o c-include1 c-include1-main.c c-include1-calc.c 2\>&1>
 ```
 
 ```sh
-$ ./c_include1
-<#exec ./c_include1>
+$ ./c-include1
+<#exec cd src/c-intro && ./c-include1>
 ```
 
 Cuando GCC compila el archivo `main.c`, la función `main()` accede a una función `calc()` que no existe en la unidad de compilación (porque esa función está definida en una unidad distinta), y por tanto avisa de que se está usando una función desconocida (en ese instante).
@@ -189,27 +189,27 @@ Más tarde, al crear el binario final, resulta que esa necesidad de una función
 Para permitir compartir código entre unidades, y que el compilador sepa en todo momento de dónde vienen las funciones a usar, debemos escribir la *declaración* (tipo de datos y nombre de variables y funciones, sin el código que las implementa) de este código en un archivo de cabecera, `.h`, mientras que la *definición* (código que implementa las funciones) seguirá en un archivo `.c`:
 
 ```c
-<#include c_include2_calc.h>
+<#include src/c-intro/c-include2-calc.h>
 ```
 
 ```c
-<#include c_include2_calc.c>
+<#include src/c-intro/c-include2-calc.c>
 ```
 
 ```c
-<#include c_include2_main.c>
+<#include src/c-intro/c-include2-main.c>
 ```
 
 Cuando ponemos la declaración de una variable o función en un archivo de cabecera `.h`, le estamos diciendo al compilador algo así como "*fíate de mí cuando encuentres esto, la definición vendrá en otro archivo*", y por eso el aviso no ocurre en este caso:
 
 ```sh
-$ gcc -o c_include2 c_include2_main.c c_include2_calc.c
-<#exec gcc -Isrc -o c_include2 src/c_include2_main.c src/c_include2_calc.c>
+$ gcc -o c-include2 c-include2-main.c c-include2-calc.c
+<#exec cd src/c-intro && gcc -I. -o c-include2 c-include2-main.c c-include2-calc.c>
 ```
 
 ```sh
-$ ./c_include2
-<#exec ./c_include2>
+$ ./c-include2
+<#exec cd src/c-intro && ./c-include2>
 ```
 
 
@@ -223,7 +223,7 @@ La librería estándar de C (*stdlib*) provee de funciones para manipulación de
 1. En el código, usamos `#include` para indicar que usaremos la cabeceras correspondiente, y haremos uso de las funciones externas que son importadas por esa cabecera:
 
 ```c
-<#include c_libm.c>
+<#include src/c-intro/c-libm.c>
 ```
 
 2. Al compilar, indicamos la librería en la que las funciones externas están compiladas. La función `sqrt()` se encuentra en la librería estándar *math*, que en Ubuntu se instala como parte del paquete *libc6-dev*:
@@ -243,15 +243,15 @@ Cuando se indica una librería al compilar, esta debe estar disponible tanto en 
 Si intentamos compilar sin la librería *math*, nos encontramos con que la función `sqrt()` no ha sido definida en ninguna parte:
 
 ```sh
-$ gcc -o c_libm c_libm.c
-<#exec gcc -o c_libm src/c_libm.c 2\>&1>
+$ gcc -o c-libm c-libm.c
+<#exec cd src/c-intro && gcc -o c-libm c-libm.c 2\>&1>
 ```
 
 Indicando al compilador el uso de esta librería, todo compila bien:
 
 ```sh
-$ gcc -o c_libm c_libm.c -lm
-<#exec gcc -o c_libm src/c_libm.c -lm>
+$ gcc -o c-libm c-libm.c -lm
+<#exec cd src/c-intro && gcc -o c-libm c-libm.c -lm>
 ```
 
 Para obtener el nombre `lm` seguimos este proceso:
@@ -266,8 +266,8 @@ Por último, la función `printf()` también requiere el mismo proceso, pero al 
 Ejecutamos para comprobar el resultado:
 
 ```sh
-$ ./c_libm
-<#exec ./c_libm>
+$ ./c-libm
+<#exec cd src/c-intro && ./c-libm>
 ```
 
 
@@ -279,39 +279,39 @@ Podemos crear nuestras propias librerías, lo cual es buena idea para no crear u
 Por ejemplo, podemos crear una librería con los contenidos de la función `calc()`:
 
 ```c
-<#include c_lib_calc.h>
+<#include src/c-intro/c-lib-calc.h>
 ```
 
 ```c
-<#include c_lib_calc.c>
+<#include src/c-intro/c-lib-calc.c>
 ```
 
 ```c
-<#include c_lib_main.c>
+<#include src/c-intro/c-lib-main.c>
 ```
 
-Para compilar debemos tener en cuenta que, por defecto, **las rutas de búsqueda de librerías se limitan a las rutas del sistema**. Nuestra librería es local y por tanto reside en el directorio actual; deberemos añadir la ruta actual a la búsqueda de librerías, tanto en el momento de compilar:
+Para compilar debemos tener en cuenta que, por defecto, **las rutas de búsqueda de librerías se limitan a las rutas del sistema**. Nuestra librería es local y por tanto reside en el directorio actual; deberemos añadir la ruta actual a la búsqueda de librerías, tanto en el momento de compilar (con la opción `-L`):
 
 ```sh
-$ gcc -shared -fPIC -o libcalc.so c_lib_calc.c -lm
-<#exec gcc -shared -fPIC -o libcalc.so src/c_lib_calc.c -lm>
-$ gcc -o c_lib_calc c_lib_main.c -L. -lcalc
-<#exec gcc -o c_lib_calc src/c_lib_main.c -L. -lcalc>
+$ gcc -shared -fPIC -o libcalc.so c-lib-calc.c -lm
+<#exec cd src/c-intro && gcc -shared -fPIC -o libcalc.so c-lib-calc.c -lm>
+$ gcc -o c-lib-calc c-lib-main.c -L. -lcalc
+<#exec cd src/c-intro && gcc -o c-lib-calc c-lib-main.c -L. -lcalc>
 ```
 
-como en el de ejecutar:
+como en el de ejecutar (con la variable de entorno `LD_LIBRARY_PATH`):
 
 ```sh
-$ LD_LIBRARY_PATH=. ./c_lib_calc
-<#exec LD_LIBRARY_PATH=. ./c_lib_calc>
+$ LD_LIBRARY_PATH=. ./c-lib-calc
+<#exec cd src/c-intro && LD_LIBRARY_PATH=. ./c-lib-calc>
 ```
 
 * `-shared` le indica a GCC que estamos compilando una librería y no una aplicación ejecutable final.
 * `-fPIC` es una opción de seguridad que en principio no necesitamos pero en Ubuntu es necesaria para poder usar otras librerías del sistema ("*libm.so*" en nuestro caso).
-* `-L.` añade el directorio actual (`.`) a la ruta de búsqueda para que GCC encuentre la librería "*libdemo_calc.so*" al compilar nuestro binario.
-* `LD_LIBRARY_PATH=.` añade el directorio actual (`.`) a la ruta de búsqueda para que Linux encuentre la librería "*libdemo_calc.so*" al ejecutar nuestro binario.
+* `-L.` añade el directorio actual (`.`) a la ruta de búsqueda para que GCC encuentre la librería "*libcalc.so*" al compilar nuestro binario.
+* `LD_LIBRARY_PATH=.` añade el directorio actual (`.`) a la ruta de búsqueda para que Linux encuentre la librería "*libcalc.so*" al ejecutar nuestro binario.
 
-En este ejemplo, un usuario de la nueva librería "*demo_calc*" tendría a su disposición dos archivos: la cabecera (`.h`) indicando qué funciones hay disponibles en la librería, y el binario (`.so`), conteniendo la implementación de la misma.
+En este ejemplo, un usuario de la nueva librería "*libcalc.so* tendría a su disposición dos archivos: la cabecera (`.h`) indicando qué funciones hay disponibles en la librería, y el binario (`.so`), conteniendo la implementación de la misma.
 
 
 
@@ -324,30 +324,30 @@ Este método es mucho más engorroso de usar que los anteriores, pero tiene la g
 Este método es justamente el que usa GStreamer para cargar opcionalmente los plugins que añaden soporte para todo tipo de codecs, contenedores, formatos, etc.
 
 ```c
-<#include c_dlopen_calc.c>
+<#include src/c-intro/c-dlopen-calc.c>
 ```
 
 ```c
-<#include c_dlopen_main.c>
+<#include src/c-intro/c-dlopen-main.c>
 ```
 
 ```sh
-$ gcc -shared -o libdlopen_calc.so c_dlopen_calc.c
-<#exec gcc -shared -o libdlopen_calc.so src/c_dlopen_calc.c>
-$ gcc -o c_dlopen c_dlopen_main.c -ldl
-<#exec gcc -o c_dlopen src/c_dlopen_main.c -ldl>
+$ gcc -shared -o libdlopen-calc.so c-dlopen-calc.c
+<#exec cd src/c-intro && gcc -shared -o libdlopen-calc.so c-dlopen-calc.c>
+$ gcc -o c-dlopen c-dlopen-main.c -ldl
+<#exec cd src/c-intro && gcc -o c-dlopen c-dlopen-main.c -ldl>
 ```
 
 ```sh
-$ ./c_dlopen
-<#exec ./c_dlopen>
+$ ./c-dlopen
+<#exec cd src/c-intro && ./c-dlopen>
 ```
 
 ```sh
-$ rm libdlopen_calc.so
-<#exec rm libdlopen_calc.so>
-$ ./c_dlopen
-<#exec ./c_dlopen>
+$ rm libdlopen-calc.so
+<#exec cd src/c-intro && rm libdlopen-calc.so>
+$ ./c-dlopen
+<#exec cd src/c-intro && ./c-dlopen>
 ```
 
 En este programa de ejemplo, el nombre de la función "calc" es conocido; sin embargo podríamos usar mecanismos más avanzados que nos permitiesen cargar funciones sin saber siquiera su nombre (haciendo un análisis inicial de todos los símbolos y cargando los que cumplan con determinadas condiciones).
@@ -377,12 +377,12 @@ En C no hay magia: un binario no es más que una colección de instrucciones en 
 Mostraremos un par en base a este programa:
 
 ```c
-<#include c_tools.c>
+<#include src/c-intro/c-tools.c>
 ```
 
 ```sh
-$ gcc -g -o c_tools c_tools.c -lm
-<#exec gcc -g -o c_tools src/c_tools.c -lm>
+$ gcc -g -o c-tools c-tools.c -lm
+<#exec cd src/c-intro && gcc -g -o c-tools c-tools.c -lm>
 ```
 
 
@@ -396,8 +396,8 @@ $ sudo apt-get install --yes libc-bin
 ```
 
 ```sh
-$ ldd ./c_tools | grep libm.so
-<#exec ldd ./c_tools \| grep libm.so>
+$ ldd ./c-tools | grep libm.so
+<#exec cd src/c-intro && ldd ./c-tools \| grep libm.so>
 ```
 
 
@@ -411,13 +411,13 @@ $ sudo apt-get install --yes binutils
 ```
 
 ```sh
-$ nm -n ./c_tools | grep -E 'main|calc|sqrt|start'
-<#exec nm -n ./c_tools \| grep -E 'main\|calc\|sqrt\|start'>
+$ nm -n ./c-tools | grep -E 'main|calc|sqrt|start'
+<#exec cd src/c-intro && nm -n ./c-tools \| grep -E 'main\|calc\|sqrt\|start'>
 ```
 
 ```sh
-$ ./c_tools
-<#exec ./c_tools>
+$ ./c-tools
+<#exec cd src/c-intro && ./c-tools>
 ```
 
 
@@ -429,24 +429,24 @@ Este es el depurador por excelencia en el mundo de C y C++. Está integrado en l
 En este ejemplo, situamos un breakpoint justo a la entrada de la función `calc()`, de forma que podemos analizar el valor de sus argumentos, incluso modificarlos, y posteriormente continuar con la ejecución.
 
 ```sh
-$ gdb ./c_tools
+$ gdb ./c-tools
 
 (gdb) break calc
 
-    Breakpoint 1 at 0x400634: file src/c_tools.c, line 8.
+    Breakpoint 1 at 0x400634: file c-tools.c, line 8.
 
 (gdb) run
 
-    Starting program: c_tools
+    Starting program: c-tools
     printf 1, address of calc(): 0x400626               <-- printf()
 
-    Breakpoint 1, calc (a=3, b=25) at src/c_tools.c:8
+    Breakpoint 1, calc (a=3, b=25) at c-tools.c:8
     8        return a + sqrt(b);
 
 (gdb) backtrace
 
-    #0  calc (a=3, b=25) at src/c_tools.c:8
-    #1  0x0000000000400686 in main () at src/c_tools.c:14
+    #0  calc (a=3, b=25) at c-tools.c:8
+    #1  0x0000000000400686 in main () at c-tools.c:14
 
 (gdb) info args
 

@@ -10,15 +10,15 @@ author: Juan Navarro
 En esta sección usaremos el siguiente programa de pruebas:
 
 ```c
-<#include make_intro/make_intro_calc.h>
+<#include src/make-intro/make-intro-calc.h>
 ```
 
 ```c
-<#include make_intro/make_intro_calc.c>
+<#include src/make-intro/make-intro-calc.c>
 ```
 
 ```c
-<#include make_intro/make_intro_main.c>
+<#include src/make-intro/make-intro-main.c>
 ```
 
 Y usaremos las siguientes herramientas:
@@ -38,7 +38,7 @@ En el fondo lo que expresamos con la sintaxis de los archivos *Makefile* es un g
 Con un ejemplo lo veremos más claro. Usamos el siguiente *Makefile*:
 
 ```makefile
-<#include make_intro/make_intro_Makefile>
+<#include src/make-intro/make-intro-Makefile>
 ```
 
 Cada línea de un *Makefile* expresa un objetivo ("*target*") y los otros objetivos de los que este depende. Para cumplir los objetivos dependientes se ejecutarán las líneas que se listan debajo, que **deben ir TABULADAS**.
@@ -48,15 +48,15 @@ Cuando el objetivo coincide con el nombre de un archivo existente, este se consi
 Por ejemplo:
 
 ```sh
-$ make -f make_intro_Makefile run
-<#exec make --always-make --directory src/make_intro --no-print-directory -f make_intro_Makefile run>
+$ make -f make-intro-Makefile run
+<#exec make --always-make --directory src/make-intro --no-print-directory -f make-intro-Makefile run>
 ```
 
 al ejecutar esto, `make` realiza los siguientes pasos:
 
-1. Busca un archivo `make_intro`. Como no existe, busca el objetivo `make_intro` en el `Makefile` y lo intenta cumplir.
-2. Para `make_intro` se comprueba si existen `make_intro_main.c` y `libmake_calc.so`. El segundo no existe así que el proceso se repite recursivamente con el objetivo del mismo nombre.
-3. `libmake_calc.so` solo depende de `make_intro_calc.c`, que ya existe, por lo que se ejecuta el comando GCC correspondiente.
+1. Busca un archivo `make-intro`. Como no existe, busca el objetivo `make-intro` en el `Makefile` y lo intenta cumplir.
+2. Para `make-intro` se comprueba si existen `make-intro-main.c` y `libmake-calc.so`. El segundo no existe así que el proceso se repite recursivamente con el objetivo del mismo nombre.
+3. `libmake-calc.so` solo depende de `make-intro-calc.c`, que ya existe, por lo que se ejecuta el comando GCC correspondiente.
 4. La recursión de objetivos se va resolviendo de nuevo hacia arriba, hasta que la dependencia de `run` ha sido satisfecha y por fin se pueden ejecutar las reglas de este, que es básicamente ejecutar la aplicación.
 
 El target `all` es el que se ejecuta por defecto cuando se llama a `make` sin especificar ningún parámetro, simplemente porque es el primero que es definido en el archivo. Por convención, todo Makefile suele tener un target `all` que sirve para compilar el programa cuando `make` se ejecuta sin argumentos. Además, si nuestro archivo se llamase simplemente "*Makefile*", nos podríamos ahorrar el argumento `-f`.
@@ -76,7 +76,7 @@ Es cierto que para proyectos pequeños, CMake ofrece una sintaxis bastante senci
 Este sería el archivo *CMakeLists* que proporciona un resultado similar al *Makefile* del ejemplo anterior:
 
 ```cmake
-<#include make_intro/CMakeLists.txt>
+<#include src/make-intro/CMakeLists.txt>
 ```
 
 CMake tiene opiniones fuertes sobre cómo se deben hacer ciertas cosas, y por ejemplo no permite que el archivo de proyecto tenga otro nombre que no sea `CMakeLists.txt`.
@@ -84,7 +84,7 @@ CMake tiene opiniones fuertes sobre cómo se deben hacer ciertas cosas, y por ej
 Los pasos de auto-generación que son ejecutados por CMake terminan creando una gran cantidad de archivos y directorios temporales, por lo que el *modus operandi* típico es crear un directorio `build`, y ejecutar CMake desde ahí. Esta forma de compilar se suele llamar **out-of-source build**:
 
 ```sh
-$ cd make_intro
+$ cd make-intro
 $ mkdir build && cd build
 ```
 
@@ -104,29 +104,29 @@ $ cmake ..
 
 ```sh
 $ make
-Scanning dependencies of target make_calc
-[ 25%] Building C object CMakeFiles/make_calc.dir/make_intro_calc.c.o
-[ 50%] Linking C shared library libmake_calc.so
-[ 50%] Built target make_calc
-Scanning dependencies of target make_intro
-[ 75%] Building C object CMakeFiles/make_intro.dir/make_intro_main.c.o
-[100%] Linking C executable make_intro
-[100%] Built target make_intro
+Scanning dependencies of target make-calc
+[ 25%] Building C object CMakeFiles/make-calc.dir/make-intro-calc.c.o
+[ 50%] Linking C shared library libmake-calc.so
+[ 50%] Built target make-calc
+Scanning dependencies of target make-intro
+[ 75%] Building C object CMakeFiles/make-intro.dir/make-intro-main.c.o
+[100%] Linking C executable make-intro
+[100%] Built target make-intro
 ```
 
 ```sh
 $ make install
 Install the project...
 -- Install configuration: ""
--- Installing: make_intro
--- Set runtime path of "make_intro" to ""
--- Installing: libmake_calc.so
+-- Installing: make-intro
+-- Set runtime path of "make-intro" to ""
+-- Installing: libmake-calc.so
 ```
 
 ```sh
 $ make run
-[ 50%] Built target make_calc
-[100%] Built target make_intro
+[ 50%] Built target make-calc
+[100%] Built target make-intro
 Scanning dependencies of target run
 Result: 8
 [100%] Built target run
@@ -168,19 +168,19 @@ Por ejemplo, dado el nombre `Foo` para la librería `libfoo.so`:
 En el caso de cJSON estamos en el primer caso: la configuración es instalada en `<prefix>/lib/cmake/cJSON/cJSONConfig.cmake`, por lo que podemos usar el modo *Config*. En nuestro ejemplo, `<prefix>` es `/opt/cJSON`, una ruta no estándar, por lo que debemos indicar a CMake en qué rutas buscar:
 
 ```cmake
-<#include cmake_json/CMakeLists.txt>
+<#include src/cmake-json/CMakeLists.txt>
 ```
 
 ```c
-<#include cmake_json/main.c>
+<#include src/cmake-json/main.c>
 ```
 
 ```sh
-$ cd cmake_json
+$ cd cmake-json
 $ mkdir build && cd build
 $ cmake ..
 $ make
-$ ./cmake_json
+$ ./cmake-json
 JSON object: '{ "name": "My Name", "Number": 112233 }'
 JSON name: 'My Name'
 ```

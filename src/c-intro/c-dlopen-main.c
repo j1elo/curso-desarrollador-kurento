@@ -5,7 +5,7 @@
 
 int main(void)
 {
-    char* file_path = "./libdlopen_calc.so";
+    char* file_path = "./libdlopen-calc.so";
     char* func_name = "calc";
 
     void* handle;
@@ -27,12 +27,12 @@ int main(void)
 
     // (Optionally) Use the function 'calc'
     if (handle && calc_fn) {
-        printf("Plugin 'demo_calc' loaded, use the function 'calc'\n");
+        printf("Plugin 'calc' loaded, use the function 'calc'\n");
         int value = calc_fn(100, 11);
         printf("value: %d\n", value);
     }
     else {
-        printf("Plugin 'demo_calc' NOT loaded, do something else\n");
+        printf("Plugin 'calc' NOT loaded, do something else\n");
         int value = 999;
         printf("value: %d\n", value);
     }

@@ -1,5 +1,5 @@
-#include "myapp_person.h"
-#include "myapp_student.h"
+#include "myapp-person.h"
+#include "myapp-student.h"
 
 // ----------------------------------------------------------------------------
 

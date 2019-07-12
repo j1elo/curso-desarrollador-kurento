@@ -1,4 +1,4 @@
-#include "myapp_person.h"
+#include "myapp-person.h"
 
 #include <stdio.h>
 

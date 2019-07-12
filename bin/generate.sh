@@ -21,12 +21,12 @@ set -o errexit -o errtrace -o pipefail -o nounset
 
 BASEPATH="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"  # Absolute canonical path
 
-STYLE="$BASEPATH/pandoc_github.css"
+STYLE="$BASEPATH/pandoc-github.css"
 
 for FILE in "$PWD"/*.md; do
     echo "Process file: '$FILE'"
 
-    gpp -H -x -I"$PWD/src" "$FILE" \
+    gpp -H -x "$FILE" \
     | pandoc --from markdown --to html5 \
         --standalone --toc \
         --self-contained --css "$STYLE" \

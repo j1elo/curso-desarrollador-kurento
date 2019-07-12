@@ -1,6 +1,6 @@
 // <#file>
 
-#include "make_intro_calc.h"
+#include "make-intro-calc.h"
 #include <stdio.h>
 
 int main(void)

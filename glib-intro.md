@@ -18,16 +18,16 @@ En este curso no estudiamos uno a uno todos los aspectos de GLib y GObject; la m
 En el siguiente ejemplo mostramos el uso de dos estructuras de datos implementadas en GLib: [GList](https://developer.gnome.org/glib/stable/glib-Doubly-Linked-Lists.html) (una lista doblemente enlazada), y [GHashTable](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html) (una tabla asociativa).
 
 ```c
-<#include glib_intro/main.c>
+<#include src/glib-intro/main.c>
 ```
 
 ```sh
-$ cd glib_intro
+$ cd glib-intro
 $ mkdir build && cd build
 $ cmake -DCMAKE_BUILD_TYPE=Debug ..
 $ make
-$ ./glib_intro
-<#exec cd src/glib_intro && (cmake -H. -B. -DCMAKE_BUILD_TYPE=Debug && make)\>/dev/null && ./glib_intro>
+$ ./glib-intro
+<#exec cd src/glib-intro && (cmake -H. -B. -DCMAKE_BUILD_TYPE=Debug && make)\>/dev/null && ./glib-intro>
 ```
 
 Dado que estamos trabajando en C, donde no hay gestión automática de la memoria, todas las estructuras deben ser explícitamente creadas y destruidas. La convención general es usar funciones `*_new()` para crear nuevas instancias, y `*_destroy()`, `*_free()`, o `*_unref()` para liberar su memoria.
@@ -47,7 +47,7 @@ g_list_free(list);
 y luego ejecutamos el programa con Valgrind para descubrir memoria perdida:
 
 ```sh
-valgrind --leak-check=full ./glib_intro
+valgrind --leak-check=full ./glib-intro
 ```
 
 Comparar esto con el resultado de usar la función adecuada para liberar la memoria de cada elemento:
@@ -60,9 +60,9 @@ g_list_free_full(list, g_free);
 
 ## Ejercicio: GHashTable
 
-Escribir una función que, dado un string arbitrario, sea capaz de contar cuántas veces aparece cara carácter alfanumérico (es decir, solo letras y números).
+Escribir una función que, dado un string arbitrario, sea capaz de contar cuántas veces aparece cada carácter alfanumérico (es decir, solo letras y números).
 
-Solución en `glib_ex_1/main.c`
+Solución en `glib-ex-1/main.c`
 
 
 # GObject

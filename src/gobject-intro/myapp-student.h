@@ -1,7 +1,7 @@
 #ifndef MYAPP_STUDENT_H
 #define MYAPP_STUDENT_H
 
-#include "myapp_person.h"
+#include "myapp-person.h"
 #include <glib-object.h>
 
 G_BEGIN_DECLS
