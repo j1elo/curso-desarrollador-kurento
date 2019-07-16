@@ -231,16 +231,16 @@ $ gst-launch-1.0 playbin uri=file:///path/to/movie.mp4
 
 # Ejemplos
 
-## Ej. 1: Reproducir un video
+## Ej. 1: Reproducir un video por HTTP
 
 En este ejemplo crearemos una pipeline sencilla que nos permita reproducir un vídeo alojado en un servidor HTTP.
 
 ```sh
-VIDEO_URL='https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm'
+$ export VIDEO_URL='https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm'
 ```
 
 ```sh
-gst-launch-1.0 playbin uri="$VIDEO_URI"
+$ gst-launch-1.0 playbin uri="$VIDEO_URI"
 ```
 
 ¡Ya está!
@@ -250,7 +250,7 @@ Gracias a todos los automatismos que vienen incluidos con `playbin`, con este el
 Sin embargo, usando `playbin` no aprendemos mucho. Vamos a hacer casi lo mismo, pero eligiendo a mano cada elemento. Para que sea más sencillo, ignoramos el audio y nos limitamos a mostrar el vídeo:
 
 ```sh
-gst-launch-1.0 \
+$ gst-launch-1.0 \
     souphttpsrc location="$VIDEO_URL" \
     ! matroskademux \
     ! queue ! vp8dec ! autovideosink
@@ -261,7 +261,7 @@ Podemos ver en la documentación de [matroskademux](https://gstreamer.freedeskto
 En `gst-launch`, podemos referirnos a ambos *pads* si le damos un nombre al elemento:
 
 ```sh
-gst-launch-1.0 \
+$ gst-launch-1.0 \
     souphttpsrc location="$VIDEO_URI" \
     ! matroskademux name=demux \
     demux.audio_0 ! queue ! vorbisdec ! autoaudiosink \
@@ -269,6 +269,81 @@ gst-launch-1.0 \
 ```
 
 Esta última *pipeline* es la que implementamos en `gstreamer-example-1/main.c`.
+
+
+
+## Ej. 2: Reproducir un stream RTP
+
+Vamos a crear una pipeline capaz de retransmitir un flujo de video mediante el protocolo RTP.
+
+Tenemos muchos ejemplos de comandos GStreamer para emitir RTP en la documentación de Kurento: [RTP Streaming Commands](https://doc-kurento.readthedocs.io/en/stable/knowledge/rtp_streaming.html).
+
+```sh
+$ gst-launch-1.0 -e \
+    filesrc location="video.mp4" ! decodebin \
+    ! x264enc tune=zerolatency \
+    ! rtph264pay ! "application/x-rtp,payload=(int)103,clock-rate=(int)90000" \
+    ! udpsink host=127.0.0.1 port=5004
+```
+
+Con esta pipeline, estamos leyendo el archivo "*video.mp4*", decodificando (*decodebin*), y codificando de nuevo en *H.264* (*x264enc*). Así obtenemos un vídeo en un formato conocido y controlado por nosotros.
+
+Después, el flujo de video resultante se paquetiza en formato RTP (*rtph264pay*) y se envía a una IP y puerto determinados (*udpsink*).
+
+Cualquier reproductor compatible con RTP y H.264 debería ser capaz de recibir el stream RTP y reproducirlo. El único detalle importante a tener en cuenta es que el reproductor necesita saber la información sobre el formato de vídeo y los detalles de paquetizado; es decir, lo que el stream RTP contiene en su interior. Esta información no es posible deducirla simplemente a partir de los paquetes según se vayan recibiendo.
+
+Por eso, o bien tenemos alguna manera de decirle explícitamente al receptor qué formato va a recibir, o bien lo escribimos en forma de **archivo SDP**, el estándar usado hoy día para transmitir este tipo de información.
+
+
+
+### Receptor 1: VLC
+
+Para abrir este stream RTP con VLC, necesitamos crear antes un archivo SDP en el que se describan las características:
+
+```sh
+$ tee "stream.sdp" >/dev/null <<'EOF'
+v=0
+o=- 0 0 IN IP4 127.0.0.1
+s=-
+c=IN IP4 127.0.0.1
+t=0 0
+m=video 5004 RTP/AVP 103
+a=rtpmap:103 H264/90000
+a=sendonly
+a=ssrc:112233 cname:user@example.com
+EOF
+```
+
+```sh
+$ cvlc stream.sdp
+```
+
+
+
+### Receptor 2: FFmpeg
+
+De manera similar al caso de VLC, podemos pedirle a FFmpeg que reproduzca el stream RTP, pasándole como origen el archivo SDP que describe nuestro media:
+
+```sh
+$ ffplay stream.sdp
+```
+
+
+
+### Receptor 3: GStreamer
+
+Vamos a aprovechar que GStreamer permite establecer los valores de formato directamente, de forma explícita, para ver cómo podríamos reproducir el stream sin usar el archivo SDP:
+
+```sh
+$ gst-launch-1.0 -e \
+    udpsrc port=5004 \
+    ! "application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264,payload=(int)103" \
+    ! rtph264depay ! decodebin ! autovideosink
+```
+
+Esta pipeline hace lo opuesto de lo que hacía la pipeline del emisor. La única novedad es que, como ya se ha explicado, no es posible obtener la información necesaria del propio stream, así que hay que proporcionársela al receptor de alguna manera. En este caso, definimos los *caps* directamente como un string en el comando `gst-launch`.
+
+Si omitimos la información del *caps*, el elemento *rtph264depay* no será capaz de depaquetizar el stream entrante, y tendremos un error en la consola.
 
 
 
