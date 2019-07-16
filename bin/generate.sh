@@ -23,14 +23,14 @@ BASEPATH="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"  # Absolute canonical path
 
 STYLE="$BASEPATH/pandoc-github.css"
 
-for FILE in "$PWD"/*.md; do
+for FILE in "$PWD"/*.gpp.md; do
     echo "Process file: '$FILE'"
 
     gpp -H -x "$FILE" \
     | pandoc --from markdown --to html5 \
         --standalone --toc \
         --self-contained --css "$STYLE" \
-        --output "${FILE%.*}.html"
+        --output "${FILE%%.*}.html"
 done
 
 
