@@ -135,8 +135,8 @@ $ ./c-args-pointer
 
 Nuestro programa recibe parámetros de ejecución a través de dos argumentos especiales que pueden ser declarados en la función `main()`:
 
-- `int argc`: Número de argumentos presentes en la siguiente variable.
-- `char* argv[]`: Array de strings con el valor de cada argumento. El primero siempre es el comando con el que se ejecutó el programa.
+* `int argc`: Número de argumentos presentes en la siguiente variable.
+* `char* argv[]`: Array de strings con el valor de cada argumento. El primero siempre es el comando con el que se ejecutó el programa.
 
 Así podemos pasar parámetros a la ejecución de nuestro programa:
 
@@ -256,8 +256,8 @@ $ gcc -o c-libm c-libm.c -lm
 
 Para obtener el nombre `lm` seguimos este proceso:
 
-- Del nombre del archivo, sustituimos "*lib*" por "*l*".
-- Quitamos el sufijo "*.so*".
+* Del nombre del archivo, sustituimos "*lib*" por "*l*".
+* Quitamos el sufijo "*.so*".
 
 Dado que el archivo de la librería es "`libm.so`", el resultado es "*lm*" y se lo pasamos así al compilador como argumento.
 

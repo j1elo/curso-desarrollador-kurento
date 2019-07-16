@@ -2,10 +2,11 @@
 
 #include <stdio.h>
 
+// ----------------------------------------------------------------------------
 
-
-// Private data definition
-// -----------------------
+/* Instance private data
+ * =====================
+ */
 
 struct _MyappStudent
 {
@@ -38,10 +39,11 @@ struct _MyappStudent
  */
 G_DEFINE_TYPE(MyappStudent, myapp_student, MYAPP_TYPE_PERSON)
 
+// ----------------------------------------------------------------------------
 
-
-// Class methods definition
-// ------------------------
+/* Class methods
+ * =============
+ */
 
 static void
 myapp_student_say_impl(MyappStudent* self, char* words)
@@ -60,10 +62,11 @@ myapp_student_say_impl(MyappStudent* self, char* words)
   g_free(name);
 }
 
+// ----------------------------------------------------------------------------
 
-
-// Constructor definition
-// ----------------------
+/* Class constructor
+ * =================
+ */
 
 static void
 myapp_student_init(MyappStudent* self)
@@ -89,3 +92,5 @@ myapp_student_class_init(MyappStudentClass* klass)
   MyappPersonClass* person_class = MYAPP_PERSON_CLASS(klass);
   person_class->say = myapp_student_say_impl;
 }
+
+// ----------------------------------------------------------------------------

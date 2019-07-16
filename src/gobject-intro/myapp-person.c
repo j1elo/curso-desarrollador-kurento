@@ -2,17 +2,16 @@
 
 #include <stdio.h>
 
+// ----------------------------------------------------------------------------
 
-
-// Private data definition
-// -----------------------
+/* Instance private data
+ * =====================
+ */
 
 typedef struct {
   gchar* name;
   int age;
 } MyappPersonPrivate;
-
-
 
 /* This helper macro defines the following:
  *
@@ -40,39 +39,14 @@ typedef struct {
  */
 G_DEFINE_TYPE_WITH_PRIVATE(MyappPerson, myapp_person, G_TYPE_OBJECT)
 
+#define GET_PRIVATE(instance) \
+    myapp_person_get_instance_private(MYAPP_PERSON(instance))
 
+// ----------------------------------------------------------------------------
 
-// Class methods definition
-// ------------------------
-
-void
-myapp_person_say(MyappPerson* self, char* words)
-{
-  printf("myapp_person_say()\n");
-
-  g_return_if_fail(MYAPP_IS_PERSON(self));
-  g_return_if_fail(words != NULL);
-
-  MyappPersonClass* klass = MYAPP_PERSON_GET_CLASS(self);
-  g_return_if_fail(klass->say != NULL);
-  klass->say(self, words);
-}
-
-static void
-myapp_person_say_impl(MyappPerson* self, char* words)
-{
-  printf("myapp_person_say_impl()\n");
-
-  MyappPersonPrivate* priv = myapp_person_get_instance_private(MYAPP_PERSON(self));
-
-  printf("I am Person '%s', aged '%d', and I say '%s'\n", priv->name,
-         priv->age, words);
-}
-
-
-
-// Properties definition
-// ---------------------
+/* Instance properties
+ * ===================
+ */
 
 enum {
   PROP_NAME = 1,
@@ -88,8 +62,7 @@ myapp_person_set_property(GObject* object, guint property_id,
 {
   printf("myapp_person_set_property(), property_id: %u\n", property_id);
 
-  MyappPersonPrivate* priv =
-      myapp_person_get_instance_private(MYAPP_PERSON(object));
+  MyappPersonPrivate* priv = GET_PRIVATE(object);
 
   switch (property_id) {
   case PROP_NAME:
@@ -111,8 +84,7 @@ myapp_person_get_property(GObject* object, guint property_id,
 {
   printf("myapp_person_get_property(), property_id: %u\n", property_id);
 
-  MyappPersonPrivate* priv =
-      myapp_person_get_instance_private(MYAPP_PERSON(object));
+  MyappPersonPrivate* priv = GET_PRIVATE(object);
 
   switch (property_id) {
   case PROP_NAME:
@@ -127,20 +99,51 @@ myapp_person_get_property(GObject* object, guint property_id,
   }
 }
 
+// ----------------------------------------------------------------------------
 
+/* Class methods
+ * =============
+ */
 
-// Destructor definition
-// ---------------------
+void
+myapp_person_say(MyappPerson* self, char* words)
+{
+  printf("myapp_person_say()\n");
 
-// One should unreference all objects in 'dispose',
-// and free all memory or close file descriptors in 'finalize'.
+  g_return_if_fail(MYAPP_IS_PERSON(self));
+  g_return_if_fail(words != NULL);
+
+  MyappPersonClass* klass = MYAPP_PERSON_GET_CLASS(self);
+  g_return_if_fail(klass->say != NULL);
+  klass->say(self, words);
+}
+
+static void
+myapp_person_say_impl(MyappPerson* self, char* words)
+{
+  printf("myapp_person_say_impl()\n");
+
+  MyappPersonPrivate* priv = GET_PRIVATE(self);
+
+  printf("I am Person '%s', aged '%d', and I say '%s'\n", priv->name,
+         priv->age, words);
+}
+
+// ----------------------------------------------------------------------------
+
+/* Class destructor
+ * ================
+ *
+ * Unreference all objects in `dispose()`,
+ * and free all memory or close file descriptors in `finalize()`.
+ */
 
 static void
 myapp_person_dispose(GObject* object)
 {
   printf("myapp_person_dispose()\n");
 
-  MyappPersonPrivate* priv = myapp_person_get_instance_private(MYAPP_PERSON(object));
+  //MyappPersonPrivate* priv = GET_PRIVATE(object);
 
   // Release all types referenced from this object
   //g_object_unref(priv->some_object); priv->some_object = NULL;
@@ -156,7 +159,7 @@ myapp_person_finalize(GObject* object)
 {
   printf("myapp_person_finalize()\n");
 
-  MyappPersonPrivate* priv = myapp_person_get_instance_private(MYAPP_PERSON(object));
+  MyappPersonPrivate* priv = GET_PRIVATE(object);
 
   // Free all memory allocated by this object
   g_free(priv->name); priv->name = NULL;
@@ -167,17 +170,18 @@ myapp_person_finalize(GObject* object)
   G_OBJECT_CLASS(myapp_person_parent_class)->finalize(object);
 }
 
+// ----------------------------------------------------------------------------
 
-
-// Constructor definition
-// ----------------------
+/* Class constructor
+ * =================
+ */
 
 static void
 myapp_person_init(MyappPerson* self)
 {
   printf("myapp_person_init()\n");
 
-  MyappPersonPrivate* priv = myapp_person_get_instance_private(self);
+  MyappPersonPrivate* priv = GET_PRIVATE(self);
 
   // Initialize all public and private members to reasonable default values.
   // They are all automatically initialized to 0 to begin with.
@@ -218,3 +222,5 @@ myapp_person_class_init(MyappPersonClass* klass)
   g_object_class_install_properties(object_class,
                                     N_PROPERTIES, obj_properties);
 }
+
+// ----------------------------------------------------------------------------

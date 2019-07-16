@@ -5,7 +5,7 @@
 #     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE=ON ..
 
 cmake_minimum_required(VERSION 3.0)
-project(glib-ex-1 VERSION 1.0.0 LANGUAGES C)
+project(glib-exercise VERSION 1.0.0 LANGUAGES C)
 
 message(STATUS "Build type: '${CMAKE_BUILD_TYPE}'")
 

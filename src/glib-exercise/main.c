@@ -7,7 +7,7 @@
 
 // ----------------------------------------------------------------------------
 
-/* GLib Exercise 1.
+/* GLib Exercise.
  *
  * Given a random string, count occurrences of each alphanumeric character
  * (ie. only letters and numbers).

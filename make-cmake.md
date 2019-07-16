@@ -183,14 +183,14 @@ JSON name: 'My Name'
 
 # Lecturas
 
-- Make:
+* Make:
 
     - [An Introduction to Makefiles](ftp://ftp.gnu.org/old-gnu/Manuals/make/html_chapter/make_2.html#SEC5)
     - [Makefile Tutorial by Example](http://makefiletutorial.com/)
     - [JavaScript bundling with Makefile](https://blog.jayway.com/2017/03/12/short-introduction-makefiles/)
     - [How To Use Makefiles to Automate Repetitive Tasks on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-use-makefiles-to-automate-repetitive-tasks-on-an-ubuntu-vps)
 
-- CMake:
+* CMake:
 
     - [An Introduction to Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
     - [The Hitchhiker's Guide to CMake](https://cgold.readthedocs.io/en/latest/)

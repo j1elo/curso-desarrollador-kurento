@@ -5,9 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 
-// GList ----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-/* Use GList to store some static strings and iterate over it to print them.
+/* GList
+ * =====
+ *
+ * Use GList to store some static strings and iterate over it to print them.
  *
  * See:
  * - https://developer.gnome.org/glib/stable/glib-Doubly-Linked-Lists.html
@@ -94,9 +97,12 @@ void test_list(void)
     }
 }
 
-// GList with g_list_free_full() ----------------------------------------------
+// ----------------------------------------------------------------------------
 
-/* Use GList to store some dynamically-allocated strings, and show how they
+/* GList with g_list_free_full()
+ * =============================
+ *
+ * Use GList to store some dynamically-allocated strings, and show how they
  * must be free'd explicitly when freeing the list itself.
  *
  * See:
@@ -119,9 +125,12 @@ void test_list_malloc(void)
     g_list_free_full(list, g_free); list = NULL;
 }
 
-// GHashTable -----------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-/* Store some static string into a hash table, and show how lookups work.
+/* GHashTable
+ * ==========
+ *
+ * Store some static string into a hash table, and show how lookups work.
  *
  * See:
  * - https://developer.gnome.org/glib/stable/glib-Hash-Tables.html

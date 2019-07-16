@@ -5,10 +5,13 @@
 
 G_BEGIN_DECLS
 
-/*
- * Type declaration
- * Convention: <PREFIX>_TYPE_<CLASS>
+// ----------------------------------------------------------------------------
+
+/* Class public declaration
+ * ========================
  */
+
+// GType macro convention: <PREFIX>_TYPE_<CLASS>
 #define MYAPP_TYPE_PERSON myapp_person_get_type()
 
 /* This helper macro declares the following:
@@ -40,16 +43,19 @@ struct _MyappPersonClass
 {
     GObjectClass parent_class;
 
-    // Class virtual function fields
+    // Class virtual methods
     void (*say)(MyappPerson* self, char* words);
 };
 
+// ----------------------------------------------------------------------------
 
-
-// Method declarations
-// -------------------
+/* Class methods
+ * =============
+ */
 
 void myapp_person_say(MyappPerson* self, char* words);
+
+// ----------------------------------------------------------------------------
 
 G_END_DECLS
 

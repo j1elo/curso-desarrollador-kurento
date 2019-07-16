@@ -6,10 +6,13 @@
 
 G_BEGIN_DECLS
 
-/*
- * Type declaration
- * Convention: <PREFIX>_TYPE_<CLASS>
+// ----------------------------------------------------------------------------
+
+/* Class public declaration
+ * ========================
  */
+
+// GType macro convention: <PREFIX>_TYPE_<CLASS>
 #define MYAPP_TYPE_STUDENT myapp_student_get_type()
 
 /* This helper macro declares the following:
@@ -26,6 +29,8 @@ G_BEGIN_DECLS
  * }
  */
 G_DECLARE_FINAL_TYPE(MyappStudent, myapp_student, MYAPP, STUDENT, MyappPerson)
+
+// ----------------------------------------------------------------------------
 
 G_END_DECLS
 
