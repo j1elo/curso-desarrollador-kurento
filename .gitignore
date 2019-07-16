@@ -1,3 +1,4 @@
+# C/C++ stuff
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
@@ -7,3 +8,30 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
+
+# Generated files
+c-intro.html
+glib-gobject-intro.html
+gstreamer-intro.html
+make-cmake.html
+video-codecs-containers.html
+src/c-intro/c-args-main
+src/c-intro/c-args-pointer
+src/c-intro/c-args-value
+src/c-intro/c-dlopen
+src/c-intro/c-include1
+src/c-intro/c-include2
+src/c-intro/c-intro
+src/c-intro/c-lib-calc
+src/c-intro/c-libm
+src/c-intro/c-tools
+src/c-intro/c-types
+src/c-intro/c-types-array
+src/c-intro/libcalc.so
+src/glib-intro/CMakeCache.txt
+src/glib-intro/CMakeFiles/
+src/glib-intro/Makefile
+src/glib-intro/cmake_install.cmake
+src/glib-intro/glib-intro
+src/make-intro/libmake-calc.so
+src/make-intro/make-intro
