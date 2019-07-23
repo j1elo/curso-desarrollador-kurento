@@ -15,7 +15,7 @@
 #   gstreamer1.0-plugins-good
 
 cmake_minimum_required(VERSION 3.0)
-project(gstreamer-hello-world VERSION 1.0.0 LANGUAGES C)
+project(gstreamer-demo VERSION 1.0.0 LANGUAGES C)
 
 message(STATUS "Build type: '${CMAKE_BUILD_TYPE}'")
 
