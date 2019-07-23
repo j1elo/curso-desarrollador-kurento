@@ -60,17 +60,17 @@ void
 myapp_person_set_property(GObject* object, guint property_id,
                           const GValue* value, GParamSpec* pspec)
 {
-  printf("myapp_person_set_property(), property_id: %u\n", property_id);
-
   MyappPersonPrivate* priv = GET_PRIVATE(object);
 
   switch (property_id) {
   case PROP_NAME:
     g_free(priv->name);
     priv->name = g_value_dup_string(value);
+    printf("myapp_person_set_property(), name: %s\n", priv->name);
     break;
   case PROP_AGE:
     priv->age = g_value_get_int(value);
+    printf("myapp_person_set_property(), age: %d\n", priv->age);
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
@@ -114,7 +114,7 @@ myapp_person_say(MyappPerson* self, char* words)
   g_return_if_fail(words != NULL);
 
   MyappPersonClass* klass = MYAPP_PERSON_GET_CLASS(self);
-  g_return_if_fail(klass->say != NULL);
+  // g_return_if_fail(klass->say != NULL);
   klass->say(self, words);
 }
 

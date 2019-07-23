@@ -45,6 +45,13 @@ $ sudo apt-get update && sudo apt-get install --yes \
     gstreamer1.0-plugins-ugly
 ```
 
+Para crear aplicaciones GStreamer, hacen falta los paquetes de desarrollo:
+
+```sh
+$ sudo apt-get update && sudo apt-get install --yes \
+    libgstreamer1.0-dev
+```
+
 
 
 # Pipelines

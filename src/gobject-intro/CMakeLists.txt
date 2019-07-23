@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME}
     main.c
     myapp-person.h myapp-person.c
     myapp-student.h myapp-student.c
+    myapp-teacher.h myapp-teacher.c
 )
 target_link_libraries(${PROJECT_NAME}
     PRIVATE ${GOBJECT_LIBRARIES}
@@ -26,5 +27,5 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE ${GOBJECT_INCLUDE_DIRS}
 )
 target_compile_options(${PROJECT_NAME}
-    PRIVATE -Wall -Wextra -Wpedantic #-Werror
+    PRIVATE -Wall -Wextra -Wno-unused-parameter #-Werror
 )

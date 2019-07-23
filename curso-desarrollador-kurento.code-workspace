@@ -3,5 +3,15 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"files.associations": {
+			"myapp-person.h": "c",
+			"glib-object.h": "c",
+			"gbinding.h": "c",
+			"glib.h": "c",
+			"galloca.h": "c",
+			"gtypes.h": "c"
+		}
+	}
 }

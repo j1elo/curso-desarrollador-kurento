@@ -44,6 +44,7 @@ G_DEFINE_TYPE(MyappStudent, myapp_student, MYAPP_TYPE_PERSON)
 /* Class methods
  * =============
  */
+void funcion(MyappPerson* self, char* words);
 
 static void
 myapp_student_say_impl(MyappStudent* self, char* words)
