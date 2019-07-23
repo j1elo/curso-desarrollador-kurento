@@ -38,7 +38,7 @@ Los elementos de GStreamer se instalan todos en 3 grandes módulos, separados po
 Para instalar GStreamer y los tres módulos principales, en Debian/Ubuntu:
 
 ```sh
-$ sudo apt-get update && sudo apt-get install --yes \
+$ sudo apt-get update ; sudo apt-get install --yes \
     gstreamer1.0-tools \
     gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-bad \
@@ -48,7 +48,7 @@ $ sudo apt-get update && sudo apt-get install --yes \
 Para crear aplicaciones GStreamer, hacen falta los paquetes de desarrollo:
 
 ```sh
-$ sudo apt-get update && sudo apt-get install --yes \
+$ sudo apt-get update ; sudo apt-get install --yes \
     libgstreamer1.0-dev
 ```
 
@@ -243,7 +243,7 @@ $ gst-launch-1.0 playbin uri=file:///path/to/movie.mp4
 En este ejemplo crearemos una pipeline sencilla que nos permita reproducir un vídeo alojado en un servidor HTTP.
 
 ```sh
-$ export VIDEO_URL='https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm'
+$ export VIDEO_URI='https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm'
 ```
 
 ```sh
@@ -258,7 +258,7 @@ Sin embargo, usando `playbin` no aprendemos mucho. Vamos a hacer casi lo mismo, 
 
 ```sh
 $ gst-launch-1.0 \
-    souphttpsrc location="$VIDEO_URL" \
+    souphttpsrc location="$VIDEO_URI" \
     ! matroskademux \
     ! queue ! vp8dec ! autovideosink
 ```
